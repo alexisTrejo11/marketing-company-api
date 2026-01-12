@@ -22,127 +22,127 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class AttributionRepositoryAdapter implements AttributionRepositoryPort {
-    private final CampaignAttributionJpaRepository jpaRepository;
-    private final AttributionEntityMapper mapper;
+  private final CampaignAttributionJpaRepository jpaRepository;
+  private final AttributionEntityMapper mapper;
 
-    @Override
-    @Transactional
-    public CampaignAttribution save(CampaignAttribution attribution) {
-        CampaignAttributionEntity entity = mapper.toEntity(attribution);
-        CampaignAttributionEntity savedEntity = jpaRepository.save(entity);
-        return mapper.toDomain(savedEntity);
-    }
+  @Override
+  @Transactional
+  public CampaignAttribution save(CampaignAttribution attribution) {
+    CampaignAttributionEntity entity = mapper.toEntity(attribution);
+    CampaignAttributionEntity savedEntity = jpaRepository.save(entity);
+    return mapper.toDomain(savedEntity);
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<CampaignAttribution> findById(CampaignAttributionId id) {
-        return jpaRepository.findByIdAndNotDeleted(id.getValue())
-                .map(mapper::toDomain);
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<CampaignAttribution> findById(CampaignAttributionId id) {
+    return jpaRepository.findByIdAndNotDeleted(id.getValue())
+        .map(mapper::toDomain);
+  }
 
-    @Override
-    @Transactional
-    public void delete(CampaignAttributionId id) {
-        jpaRepository.deleteById(id.getValue());
-    }
+  @Override
+  @Transactional
+  public void delete(CampaignAttributionId id) {
+    jpaRepository.deleteById(id.getValue());
+  }
 
-    @Override
-    public Page<CampaignAttribution> findTopAttributedCampaigns(Pageable pageable) {
-        return null;
-    }
+  @Override
+  public Page<CampaignAttribution> findTopAttributedCampaigns(Pageable pageable) {
+    return null;
+  }
 
-    @Override
-    public Page<CampaignAttribution> findAll(Pageable pageable) {
-        return null;
-    }
+  @Override
+  public Page<CampaignAttribution> findAll(Pageable pageable) {
+    return null;
+  }
 
-    @Override
-    public Page<CampaignAttribution> findByFilters(DealId dealId, MarketingCampaignId campaignId, List<AttributionModel> attributionModel, BigDecimal minAttributionPercentage, BigDecimal maxAttributionPercentage, BigDecimal minAttributedRevenue, BigDecimal maxAttributedRevenue, Pageable pageable) {
-        return null;
-    }
+  @Override
+  public Page<CampaignAttribution> findByFilters(DealId dealId, MarketingCampaignId campaignId,
+      List<AttributionModel> attributionModel, BigDecimal minAttributionPercentage, BigDecimal maxAttributionPercentage,
+      BigDecimal minAttributedRevenue, BigDecimal maxAttributedRevenue, Pageable pageable) {
+    return null;
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<CampaignAttribution> findByDealId(DealId dealId, Pageable pageable) {
-        return jpaRepository.findByDealId(dealId.getValue(), pageable)
-                .map(mapper::toDomain);
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public Page<CampaignAttribution> findByDealId(DealId dealId, Pageable pageable) {
+    return jpaRepository.findByDealId(dealId.getValue(), pageable)
+        .map(mapper::toDomain);
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<CampaignAttribution> findByCampaignId(MarketingCampaignId campaignId, Pageable pageable) {
-        return jpaRepository.findByCampaignId(campaignId.getValue(), pageable)
-                .map(mapper::toDomain);
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public Page<CampaignAttribution> findByCampaignId(MarketingCampaignId campaignId, Pageable pageable) {
+    return jpaRepository.findByCampaignId(campaignId.getValue(), pageable)
+        .map(mapper::toDomain);
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Optional<CampaignAttribution> findByDealIdAndCampaignId(DealId dealId, MarketingCampaignId campaignId) {
-        return jpaRepository.findByDealIdAndCampaignId(dealId.getValue(), campaignId.getValue())
-                .map(mapper::toDomain);
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public Optional<CampaignAttribution> findByDealIdAndCampaignId(DealId dealId, MarketingCampaignId campaignId) {
+    return jpaRepository.findByDealIdAndCampaignId(dealId.getValue(), campaignId.getValue())
+        .map(mapper::toDomain);
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public Page<CampaignAttribution> findByAttributionModel(
-            AttributionModel attributionModel,
-            Pageable pageable) {
-        return jpaRepository.findByAttributionModel(attributionModel, pageable)
-                .map(mapper::toDomain);
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public Page<CampaignAttribution> findByAttributionModel(
+      AttributionModel attributionModel,
+      Pageable pageable) {
+    return jpaRepository.findByAttributionModel(attributionModel, pageable)
+        .map(mapper::toDomain);
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public BigDecimal calculateTotalAttributedRevenueByCampaignId(MarketingCampaignId campaignId) {
-        return jpaRepository.calculateTotalAttributedRevenueByCampaignId(campaignId.getValue());
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public BigDecimal calculateTotalAttributedRevenueByCampaignId(MarketingCampaignId campaignId) {
+    return jpaRepository.calculateTotalAttributedRevenueByCampaignId(campaignId.getValue());
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public BigDecimal calculateAverageAttributionPercentageByCampaignId(MarketingCampaignId campaignId) {
-        return jpaRepository.calculateAverageAttributionPercentageByCampaignId(campaignId.getValue());
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public BigDecimal calculateAverageAttributionPercentageByCampaignId(MarketingCampaignId campaignId) {
+    return jpaRepository.calculateAverageAttributionPercentageByCampaignId(campaignId.getValue());
+  }
 
-    @Override
-    @Transactional(readOnly = true)
-    public long countUniqueDealsByCampaignId(MarketingCampaignId campaignId) {
-        return jpaRepository.countUniqueDealsByCampaignId(campaignId.getValue());
-    }
+  @Override
+  @Transactional(readOnly = true)
+  public long countUniqueDealsByCampaignId(MarketingCampaignId campaignId) {
+    return jpaRepository.countUniqueDealsByCampaignId(campaignId.getValue());
+  }
 
-    @Override
-    public Long countByCampaignId(MarketingCampaignId campaignId) {
-        return 0L;
-    }
+  @Override
+  public Long countByCampaignId(MarketingCampaignId campaignId) {
+    return 0L;
+  }
 
-    @Override
-    public Long calculateTotalTouchpointsByCampaignId(MarketingCampaignId campaignId) {
-        return 0L;
-    }
+  @Override
+  public Long calculateTotalTouchpointsByCampaignId(MarketingCampaignId campaignId) {
+    return 0L;
+  }
 
-    @Override
-    public Map<Integer, Long> getTouchpointDistributionByCampaignId(MarketingCampaignId campaignId) {
-        return Map.of();
-    }
+  @Override
+  public Map<Integer, Long> getTouchpointDistributionByCampaignId(MarketingCampaignId campaignId) {
+    return Map.of();
+  }
 
-    @Override
-    public Map<String, Long> countByAttributionModelByCampaignId(MarketingCampaignId campaignId) {
-        return Map.of();
-    }
+  @Override
+  public Map<String, Long> countByAttributionModelByCampaignId(MarketingCampaignId campaignId) {
+    return Map.of();
+  }
 
-    @Override
-    public List<BigDecimal> getAllAttributedRevenuesByCampaignId(MarketingCampaignId campaignId) {
-        return List.of();
-    }
+  @Override
+  public List<BigDecimal> getAllAttributedRevenuesByCampaignId(MarketingCampaignId campaignId) {
+    return List.of();
+  }
 
-    @Override
-    public Map<String, BigDecimal> calculateRevenueByModelByCampaignId(MarketingCampaignId campaignId) {
-        return Map.of();
-    }
+  @Override
+  public Map<String, BigDecimal> calculateRevenueByModelByCampaignId(MarketingCampaignId campaignId) {
+    return Map.of();
+  }
 
-
-
-    @Override
-    public boolean existsByDealIdAndCampaignId(DealId dealId, MarketingCampaignId campaignId) {
-        return jpaRepository.findByDealIdAndCampaignId(dealId.getValue(), campaignId.getValue()).isPresent();
-    }
+  @Override
+  public boolean existsByDealIdAndCampaignId(DealId dealId, MarketingCampaignId campaignId) {
+    return jpaRepository.findByDealIdAndCampaignId(dealId.getValue(), campaignId.getValue()).isPresent();
+  }
 }

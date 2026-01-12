@@ -56,9 +56,6 @@ public class OpportunityEntityMapper {
       }
     }
 
-    // Calculated fields
-    entity.setOverdue(opportunity.isOverdue());
-
     // Audit fields
     entity.setCreatedAt(opportunity.getCreatedAt());
     entity.setUpdatedAt(opportunity.getUpdatedAt());
@@ -155,7 +152,5 @@ public class OpportunityEntityMapper {
       existingEntity.setNextStepsDueDate(null);
     }
 
-    // Calculated field
-    existingEntity.setOverdue(opportunity.isOverdue());
   }
 }

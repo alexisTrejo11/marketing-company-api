@@ -14,8 +14,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -62,9 +60,6 @@ public class OpportunityEntity extends BaseJpaEntity {
   @Column(name = "probability")
   private Integer probability;
 
-  @Column(name = "is_overdue", nullable = false)
-  private boolean isOverdue;
-
   public OpportunityEntity(Long id) {
     this.setId(id);
   }
@@ -76,17 +71,4 @@ public class OpportunityEntity extends BaseJpaEntity {
     return customerCompany != null ? customerCompany.getId() : null;
   }
 
-  @PrePersist
-  @PreUpdate
-  public void calculateIsOverdue() {
-    if (stage == null ||
-        stage == OpportunityStage.CLOSED_WON ||
-        stage == OpportunityStage.CLOSED_LOST) {
-      this.isOverdue = false;
-    } else if (expectedCloseDate != null) {
-      this.isOverdue = expectedCloseDate.isBefore(LocalDate.now());
-    } else {
-      this.isOverdue = false;
-    }
-  }
 }

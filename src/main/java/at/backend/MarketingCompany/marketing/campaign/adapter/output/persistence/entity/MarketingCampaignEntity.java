@@ -1,27 +1,38 @@
 package at.backend.MarketingCompany.marketing.campaign.adapter.output.persistence.entity;
 
-import at.backend.MarketingCompany.marketing.activity.adapter.output.persitence.model.CampaignActivityEntity;
-import at.backend.MarketingCompany.marketing.asset.adapter.output.persitence.model.MarketingAssetEntity;
-import at.backend.MarketingCompany.marketing.attribution.adapter.output.persitence.model.CampaignAttributionEntity;
-import at.backend.MarketingCompany.marketing.campaign.core.domain.valueobject.CampaignStatus;
-import at.backend.MarketingCompany.marketing.ab_test.core.domain.valueobject.CampaignType;
-import at.backend.MarketingCompany.marketing.channel.adapter.output.persitence.model.MarketingChannelEntity;
-import at.backend.MarketingCompany.marketing.interaction.adapter.output.persitence.model.CampaignInteractionEntity;
-import at.backend.MarketingCompany.marketing.metric.adapter.output.persitence.model.CampaignMetricEntity;
-import at.backend.MarketingCompany.marketing.target.adapter.output.persitence.model.CampaignTargetEntity;
-import at.backend.MarketingCompany.shared.jpa.BaseJpaEntity;
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import at.backend.MarketingCompany.marketing.ab_test.core.domain.valueobject.CampaignType;
+import at.backend.MarketingCompany.marketing.activity.adapter.output.persitence.model.CampaignActivityEntity;
+import at.backend.MarketingCompany.marketing.asset.adapter.output.persitence.model.MarketingAssetEntity;
+import at.backend.MarketingCompany.marketing.attribution.adapter.output.persitence.model.CampaignAttributionEntity;
+import at.backend.MarketingCompany.marketing.campaign.core.domain.valueobject.CampaignStatus;
+import at.backend.MarketingCompany.marketing.channel.adapter.output.persitence.model.MarketingChannelEntity;
+import at.backend.MarketingCompany.marketing.interaction.adapter.output.persitence.model.CampaignInteractionEntity;
+import at.backend.MarketingCompany.marketing.metric.adapter.output.persitence.model.CampaignMetricEntity;
+import at.backend.MarketingCompany.marketing.target.adapter.output.persistence.model.CampaignTargetEntity;
+import at.backend.MarketingCompany.shared.jpa.BaseJpaEntity;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -112,8 +123,7 @@ public class MarketingCampaignEntity extends BaseJpaEntity {
   @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<AbTestEntity> abTests = new HashSet<>();
 
-
-	public MarketingCampaignEntity(Long id) {
-		this.id = id;
-	}
+  public MarketingCampaignEntity(Long id) {
+    this.id = id;
+  }
 }

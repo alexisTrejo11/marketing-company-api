@@ -12,7 +12,7 @@ build/
 out/
 
 
-target/
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -54,8 +54,7 @@ application-*.yml
 *.swp
 *~
 
-/flyway/
-*.sql
+
 
 
 dist/

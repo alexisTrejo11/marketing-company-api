@@ -382,61 +382,6 @@ input DeleteTargetInput {
   hardDelete: Boolean!
 }
 
-"""
-Campaign target filter options.
-"""
-input TargetFilterInput {
-  """
-  Filter by campaign ID
-  """
-  campaignId: ID
-
-  """
-  Filter by metric types
-  """
-  metricTypes: [MetricType!]
-
-  """
-  Filter by achievement status
-  """
-  isAchieved: Boolean
-
-  """
-  Filter by minimum target value
-  """
-  minTargetValue: Float
-
-  """
-  Filter by maximum target value
-  """
-  maxTargetValue: Float
-
-  """
-  Filter by minimum current value
-  """
-  minCurrentValue: Float
-
-  """
-  Filter by maximum current value
-  """
-  maxCurrentValue: Float
-
-  """
-  Filter by minimum achievement percentage
-  """
-  minAchievementPercentage: Float
-
-  """
-  Filter by maximum achievement percentage
-  """
-  maxAchievementPercentage: Float
-
-  """
-  Search term
-  """
-  searchTerm: String
-}
-
 # ============================================================================
 # QUERIES
 # ============================================================================
@@ -446,21 +391,6 @@ extend type Query {
   Get a campaign target by ID.
   """
   target(id: ID!): TargetOutput
-
-  """
-  Search campaign targets with filters.
-  """
-  searchTargets(
-    """
-    Filter options
-    """
-    filter: TargetFilterInput
-
-    """
-    Pagination parameters
-    """
-    pageInput: PageInput!
-  ): TargetPage!
 
   """
   Get targets by campaign.

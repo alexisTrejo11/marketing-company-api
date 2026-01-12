@@ -1,16 +1,17 @@
 package at.backend.MarketingCompany.marketing.campaign.core.domain.models;
 
 import at.backend.MarketingCompany.marketing.campaign.core.domain.valueobject.MetricType;
+import lombok.Builder;
 
 import java.math.BigDecimal;
 
+@Builder
 public record CampaignTarget(
     String metricName,
-    MetricType metricType,
+    Object metricType,
     BigDecimal targetValue,
     BigDecimal currentValue,
-    String measurementUnit
-) {
+    String measurementUnit) {
   public CampaignTarget {
     if (metricName == null || metricName.isBlank()) {
       throw new IllegalArgumentException("Metric name is required");
@@ -38,8 +39,4 @@ public record CampaignTarget(
         .multiply(BigDecimal.valueOf(100));
   }
 
-
-
-
 }
-
