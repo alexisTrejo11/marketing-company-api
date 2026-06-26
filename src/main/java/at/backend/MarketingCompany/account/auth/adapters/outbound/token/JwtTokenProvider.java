@@ -19,16 +19,16 @@ import java.util.UUID;
 @Component
 public class JwtTokenProvider implements TokenProvider {
 
-    @Value("${JWT_ACCESS_SECRET}")
+    @Value("${app.auth.jwt.access-secret}")
     private String accessTokenSecret;
 
-    @Value("${JWT_REFRESH_SECRET}")
+    @Value("${app.auth.jwt.refresh-secret}")
     private String refreshTokenSecret;
 
-    @Value("${JWT_ACCESS_EXPIRATION_MINUTES:15}")
+    @Value("${app.auth.jwt.access-expiration-minutes:15}")
     private int accessTokenExpirationMinutes;
 
-    @Value("${JWT_REFRESH_EXPIRATION_DAYS:30}")
+    @Value("${app.auth.jwt.refresh-expiration-days:30}")
     private int refreshTokenExpirationDays;
 
     private SecretKey getAccessSigningKey() {

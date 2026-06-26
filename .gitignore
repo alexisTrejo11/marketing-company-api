@@ -12,7 +12,9 @@ build/
 out/
 
 
-target/
+/target/
+!**/src/main/java/**/target/**
+!**/src/test/java/**/target/**
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
@@ -34,6 +36,7 @@ Thumbs.db
 
 docker-compose.override.yml
 docker-compose.prod.yml
+docker/compose.override.yml
 .dockerignore
 
 .env
@@ -56,6 +59,8 @@ application-*.yml
 
 /flyway/
 *.sql
+!src/main/resources/db/migration/*.sql
+!src/test/resources/db/migration/*.sql
 
 
 dist/

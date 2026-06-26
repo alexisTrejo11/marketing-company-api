@@ -5,7 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Configuration properties for CORS (Cross-Origin Resource Sharing).
@@ -51,7 +53,19 @@ public class CorsProperties {
      * 
      * <p><b>Security Note:</b> Using "*" allows ALL origins and should only be used in development.</p>
      */
-    private List<String> allowedOrigins = new ArrayList<>(List.of("http://localhost:3000"));
+    private List<String> allowedOrigins = new ArrayList<>();
+
+    public void setAllowedOrigins(List<String> allowedOrigins) {
+        if (allowedOrigins == null || allowedOrigins.isEmpty()) {
+            this.allowedOrigins = new ArrayList<>();
+            return;
+        }
+        this.allowedOrigins = allowedOrigins.stream()
+                .flatMap(origin -> Arrays.stream(origin.split(",")))
+                .map(String::trim)
+                .filter(origin -> !origin.isEmpty())
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
 
     /**
      * List of allowed HTTP methods for CORS requests.

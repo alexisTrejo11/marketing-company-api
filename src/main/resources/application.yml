@@ -66,7 +66,7 @@ spring:
       include-stacktrace: on_parameter
       include-message: always
     cors:
-      allowed-origins: "http://localhost:3000,http://localhost:8080"
+      allowed-origins: "${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:8080}"
       allowed-methods: "GET,POST,OPTIONS"
       allowed-headers: "*"
       allow-credentials: true
@@ -108,7 +108,7 @@ spring:
   # SERVER CONFIGURATION
   # ============================================
   server:
-    port: 8080
+    port: ${SERVER_PORT:8080}
     servlet:
       context-path: /api
       encoding:
@@ -183,8 +183,7 @@ spring:
   # ============================================
   data:
     redis:
-      host: ${SPRING_REDIS_HOST:localhost}
-      port: ${SPRING_REDIS_PORT:6379}
+      url: ${REDIS_URL:redis://localhost:6379}
       timeout: 60000
       lettuce:
         pool:
@@ -226,13 +225,23 @@ app:
 
   security:
     jwt:
-      secret: ${JWT_SECRET:your-256-bit-secret-key-change-this-in-production}
-      expiration: 86400000
       issuer: CRM-Service
+
+  auth:
+    jwt:
+      access-secret: ${JWT_ACCESS_SECRET:change-me-access-secret-minimum-32-characters-long}
+      refresh-secret: ${JWT_REFRESH_SECRET:change-me-refresh-secret-minimum-32-characters-long}
+      access-expiration-minutes: ${JWT_ACCESS_EXPIRATION_MINUTES:15}
+      refresh-expiration-days: ${JWT_REFRESH_EXPIRATION_DAYS:30}
+    max-sessions-per-user: ${AUTH_MAX_SESSIONS_PER_USER:5}
 
   pagination:
     default-page-size: 20
     max-page-size: 100
+
+  redis:
+    # Global namespace for every Redis key (sessions, rate limits, repositories, etc.)
+    key-prefix: ${REDIS_KEY_PREFIX:marketing-company-api:}
 
   cache:
     company:
@@ -282,10 +291,7 @@ app:
 
   cors:
     # Allowed origins - domains that can make requests to this API
-    allowed-origins:
-      - http://localhost:3000
-      - http://localhost:5173
-      - http://localhost:8080 # Local testing
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000,http://localhost:5173,http://localhost:8080}
 
     # Allowed HTTP methods
     allowed-methods:
@@ -328,8 +334,8 @@ app:
     temp-dir: ./temp-uploads
 
   email:
-    from: no-reply@crm-system.com
-    enabled: false
+    from: ${EMAIL_FROM:no-reply@example.com}
+    enabled: ${EMAIL_ENABLED:false}
     retry-count: 3
 
   notifications:
@@ -465,26 +471,18 @@ app:
     enabled: true
   monitoring:
     enabled: true
-  security:
+  auth:
     jwt:
-      secret: ${JWT_SECRET}
+      access-secret: ${JWT_ACCESS_SECRET}
+      refresh-secret: ${JWT_REFRESH_SECRET}
 
 ---
 # DOCKER PROFILE
+# DB_* and REDIS_URL are overridden in docker/compose.full.yml for the container network.
 spring:
   config:
     activate:
       on-profile: docker
-
-  datasource:
-    url: jdbc:postgresql://postgres:5432/${POSTGRES_DB:marketing_company_db}
-    username: ${POSTGRES_USER:postgres}
-    password: ${POSTGRES_PASSWORD:postgres}
-
-  data:
-    redis:
-      host: ${SPRING_REDIS_HOST:redis}
-      port: ${SPRING_REDIS_PORT:6379}
 
   jpa:
     show-sql: true
@@ -522,3 +520,9 @@ spring:
   logging:
     level:
       at.backend.MarketingCompany: WARN
+
+app:
+  auth:
+    jwt:
+      access-secret: test-access-secret-key-for-unit-tests-only-min-32-chars
+      refresh-secret: test-refresh-secret-key-for-unit-tests-only-min-32-chars

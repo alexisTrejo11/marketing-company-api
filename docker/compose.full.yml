@@ -1,0 +1,91 @@
+# Full local stack: Spring Boot app + PostgreSQL + Redis.
+# App connection uses DB_* and REDIS_URL from .env; compose overrides for the Docker network.
+#
+# Usage (from project root):
+#   cp .env.example .env
+#   docker compose -f docker/compose.full.yml --env-file .env up --build
+#
+# API: http://localhost:${APP_HOST_PORT:-8081}/api/graphql
+
+name: marketing-company-full
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: mc-postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:-marketing_company_db}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Set DB_PASSWORD in .env}
+    ports:
+      - "${DB_HOST_PORT:-5431}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ../init-scripts:/docker-entrypoint-initdb.d:ro
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres} -d ${DB_NAME:-marketing_company_db}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    container_name: mc-redis
+    ports:
+      - "${REDIS_HOST_PORT:-6378}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - backend-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: mc-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    env_file:
+      - ../.env
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: ${SERVER_PORT:-8080}
+      # Container network overrides (must NOT be localhost inside the app container)
+      DB_HOST: postgres
+      DB_PORT: 5432
+      REDIS_URL: redis://redis:6379
+      REDIS_KEY_PREFIX: ${REDIS_KEY_PREFIX:-marketing-company-api:}
+      JWT_ACCESS_SECRET: ${JWT_ACCESS_SECRET:?Set JWT_ACCESS_SECRET in .env}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?Set JWT_REFRESH_SECRET in .env}
+      JWT_ACCESS_EXPIRATION_MINUTES: ${JWT_ACCESS_EXPIRATION_MINUTES:-15}
+      JWT_REFRESH_EXPIRATION_DAYS: ${JWT_REFRESH_EXPIRATION_DAYS:-30}
+      AUTH_MAX_SESSIONS_PER_USER: ${AUTH_MAX_SESSIONS_PER_USER:-5}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173,http://localhost:8080}
+    ports:
+      - "${APP_HOST_PORT:-8081}:${SERVER_PORT:-8080}"
+    networks:
+      - backend-network
+    volumes:
+      - app_logs:/app/logs
+    restart: unless-stopped
+
+networks:
+  backend-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
+  app_logs:
