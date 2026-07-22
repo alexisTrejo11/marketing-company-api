@@ -502,16 +502,13 @@ spring:
     activate:
       on-profile: test
 
-  datasource:
-    url: jdbc:h2:mem:testdb
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
-
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: generate-drop
+      ddl-auto: create-drop
+
+  flyway:
+    enabled: false
 
   graphql:
     graphiql:
@@ -526,3 +523,6 @@ app:
     jwt:
       access-secret: test-access-secret-key-for-unit-tests-only-min-32-chars
       refresh-secret: test-refresh-secret-key-for-unit-tests-only-min-32-chars
+      access-expiration-minutes: 15
+      refresh-expiration-days: 30
+    max-sessions-per-user: 5

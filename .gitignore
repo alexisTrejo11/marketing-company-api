@@ -6,6 +6,7 @@ build/
 !gradle/wrapper/
 
 .idea/
+.vscode/
 *.iml
 *.iws
 *.ipr
@@ -37,7 +38,6 @@ Thumbs.db
 docker-compose.override.yml
 docker-compose.prod.yml
 docker/compose.override.yml
-.dockerignore
 
 .env
 .env.local
@@ -67,6 +67,7 @@ dist/
 lib/
 libs/
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
 *.war
 *.ear
 *.zip

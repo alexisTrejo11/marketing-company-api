@@ -1,12 +1,11 @@
 package at.backend.MarketingCompany;
 
+import at.backend.MarketingCompany.support.IntegrationTestBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
-@ActiveProfiles("test")
-class CrmApplicationTests {
+class CrmApplicationTests extends IntegrationTestBase {
 
 	@Test
 	void contextLoads() {

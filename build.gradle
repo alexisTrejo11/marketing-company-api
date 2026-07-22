@@ -5,7 +5,7 @@
     }
 
     group = 'at.backend'
-    version = '0.0.1-SNAPSHOT'
+    version = '1.0.0'
 
     java {
         toolchain {
@@ -63,8 +63,6 @@
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
         testImplementation 'org.springframework.graphql:spring-graphql-test'
         implementation 'org.springframework.boot:spring-boot-starter-aop'
-        testImplementation 'org.testcontainers:junit-jupiter'
-        testImplementation 'org.testcontainers:postgresql'
         testImplementation 'com.h2database:h2'
 
         // JWT

@@ -35,13 +35,13 @@ Minimalist but production-ready API that unifies **CRM** (companies, opportuniti
 
 The service is **deployed on AWS**: application on **EC2**, PostgreSQL on **RDS**, sessions and rate limits on **Upstash Redis**, with **Kafka** consumed from a cloud-managed broker and **external observability** via Spring Actuator (Prometheus scrape).
 
-| | |
-|---|---|
-| **Version** | 0.0.1-SNAPSHOT |
-| **Status** | Deployed (AWS) |
-| **Primary API prefix** | `/api` |
+| |                                                                                                              |
+|---|--------------------------------------------------------------------------------------------------------------|
+| **Version** | 1.0.0                                                                                                        |
+| **Status** | Deployed (AWS)                                                                                               |
+| **Primary API prefix** | `/api`                                                                                                       |
 | **Live / health check** | [https://{{YOUR_EC2_OR_ALB_HOST}}/api/actuator/health](https://{{YOUR_EC2_OR_ALB_HOST}}/api/actuator/health) |
-| **GraphQL** | [https://{{YOUR_EC2_OR_ALB_HOST}}/api/graphql](https://{{YOUR_EC2_OR_ALB_HOST}}/api/graphql) |
+| **GraphQL** | [https://{{YOUR_EC2_OR_ALB_HOST}}/api/graphql](https://{{YOUR_EC2_OR_ALB_HOST}}/api/graphql)                 |
 
 Replace `{{YOUR_EC2_OR_ALB_HOST}}` with your public EC2 or ALB hostname.
 
